@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">JsNews</string>
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="api_key">883503dde64a44e7a9f83ff2b1b4959e</string>
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/news_nav_graph"
+    app:startDestination="@id/breaknews">
+
+    <fragment
+        android:id="@+id/breaknews"
+        android:name="com.example.jsnews.ui.main.fragment.Breaknews"
+        android:label="fragment_breaknews"
+        tools:layout="@layout/fragment_breaknews" >
+        <action
+            android:id="@+id/action_breaknews_to_article"
+            app:destination="@id/article"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/savednews"
+        android:name="com.example.jsnews.ui.main.fragment.Savednews"
+        android:label="fragment_savednews"
+        tools:layout="@layout/fragment_savednews" >
+        <action
+            android:id="@+id/action_savednews_to_article"
+            app:destination="@id/article" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchnews"
+        android:name="com.example.jsnews.ui.main.fragment.Searchnews"
+        android:label="Searchnews" >
+        <action
+            android:id="@+id/action_searchnews_to_article"
+            app:destination="@id/article" />
+    </fragment>
+    <fragment
+        android:id="@+id/article"
+        android:name="com.example.jsnews.ui.main.fragment.Article"
+        android:label="fragment_article"
+        tools:layout="@layout/fragment_article" />
+</navigation>
