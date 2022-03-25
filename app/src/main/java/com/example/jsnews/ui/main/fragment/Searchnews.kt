@@ -3,16 +3,21 @@ package com.example.jsnews.ui.main.fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.jsnews.NewsActivity
 import com.example.jsnews.R
 import com.example.jsnews.adapters.NewsAdapter
+import com.example.jsnews.service.Constants.Companion.SEARCH_NEWS_TIME_DELAY
 import com.example.jsnews.ui.main.NewsViewModel
 import com.example.jsnews.ui.main.Resource
 import kotlinx.android.synthetic.main.fragment_searchnews.*
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class Searchnews : Fragment(R.layout.fragment_searchnews) {
@@ -29,7 +34,17 @@ class Searchnews : Fragment(R.layout.fragment_searchnews) {
 
 
         var job: Job? = null
-        et
+        etSearch.addTextChangedListener { editable ->
+            job?.cancel()
+            job = MainScope().launch {
+                delay(SEARCH_NEWS_TIME_DELAY)
+                editable?.let {
+                    if (editable.toString().isNotEmpty()){
+                        viewModel.searchNews(editable.toString())
+                    }
+                }
+            }
+        }
 
 
         viewModel.searchNews.observe(viewLifecycleOwner, Observer { response ->
