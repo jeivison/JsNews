@@ -14,6 +14,9 @@ import kotlinx.android.synthetic.main.item_article_preview.view.*
 
 class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>(){
 
+   // private var _binding : NewsAdapter? = null
+
+
     inner class ArticleViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
     private val differCallbacks = object : DiffUtil.ItemCallback<Article>(){
@@ -44,6 +47,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>(){
         val article = differ.currentList[position]
         holder.itemView.apply {
             Glide.with(this).load(article.urlToImage).into(ivArticleImage)
+
             tvSource.text = article.source.name
             tvTitle.text = article.title
             tvDescription.text = article.description

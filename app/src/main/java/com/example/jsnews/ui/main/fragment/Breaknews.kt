@@ -22,6 +22,8 @@ class Breaknews : Fragment(R.layout.fragment_breaknews) {
     lateinit var viewModel: NewsViewModel
     lateinit var newsAdapter: NewsAdapter
 
+    val TAG = "BreakingNews"
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as NewsActivity).viewModel
@@ -40,6 +42,9 @@ class Breaknews : Fragment(R.layout.fragment_breaknews) {
                     response.message?.let { message ->
                         Log.e(TAG,"An error occured: $message")
                     }
+                }
+                is Resource.Loading -> {
+                    showProgressBar()
                 }
 
             }

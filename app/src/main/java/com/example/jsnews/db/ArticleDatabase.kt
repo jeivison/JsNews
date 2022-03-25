@@ -6,14 +6,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.jsnews.model.Article
-import java.security.AccessControlContext
+
 
 
 @Database(
     entities = [Article::class],
     version = 1
 )
-
 @TypeConverters(Converters::class)
 abstract class ArticleDatabase : RoomDatabase(){
 
@@ -21,13 +20,25 @@ abstract class ArticleDatabase : RoomDatabase(){
 
     companion object{
 
+
         @Volatile
         private var instance: ArticleDatabase? = null
         private val LOCK = Any()
-
+        /*
+        fun createDatabase(context: Context): ArticleDatabase{
+            return INSTANCE ?: synchronized(this){
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    ArticleDatabase::class.java,
+                    "article_db.db"
+                ).build()
+                INSTANCE = instance
+                return instance
+            }
+        }*/
 
         operator fun invoke(context: Context) = instance ?: synchronized(LOCK){
-            instance ?: createDatabase(context).also{ instance = it }
+            instance?: createDatabase(context).also{ instance = it }
         }
 
         private fun createDatabase(context: Context) =
@@ -37,5 +48,5 @@ abstract class ArticleDatabase : RoomDatabase(){
                 "article_db.db"
             ).build()
     }
-
+}
 }
