@@ -1,13 +1,12 @@
 package com.example.jsnews.ui.main.fragment
 
-import android.content.ContentValues.TAG
+
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.jsnews.NewsActivity
 import com.example.jsnews.R
@@ -28,6 +27,18 @@ class Breaknews : Fragment(R.layout.fragment_breaknews) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as NewsActivity).viewModel
         setupRecyclerView()
+
+        newsAdapter.setOnItemClickListener{
+            val bundle = Bundle().apply {
+                putSerializable("article", it)
+            }
+            findNavController().navigate(
+                R.id.action_breaknews_to_article,
+                bundle
+            )
+        }
+
+
 
         viewModel.breakingNews.observe(viewLifecycleOwner, Observer { response ->
             when(response){
@@ -71,3 +82,4 @@ class Breaknews : Fragment(R.layout.fragment_breaknews) {
 
 
 }
+
