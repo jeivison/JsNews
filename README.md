@@ -7,6 +7,6 @@
 </h1>
 
 <h4 align="center"> 
-	🚧  Kotlin 🚀 Projeto em construção...  🚧
+	🚧 🚀Projeto em construção...  🚧
 </h4>
 
