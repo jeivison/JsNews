@@ -3,14 +3,14 @@ package com.example.jsnews.ui.main
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Query
+import com.example.jsnews.model.Article
 import com.example.jsnews.model.NewsResponse
 import com.example.jsnews.repository.NewsRepository
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class NewsViewModel(
-    val newsRepository: NewsRepository
+    private val newsRepository: NewsRepository
 ) : ViewModel() {
 
 
@@ -22,7 +22,7 @@ class NewsViewModel(
 
 
     init {
-        getBreakingNews("br")
+        getBreakingNews("pt")
     }
 
     fun getBreakingNews(countryCode: String) = viewModelScope.launch {
@@ -58,5 +58,10 @@ class NewsViewModel(
     }
 
 
+    fun saveArticle(article: Article) = viewModelScope.launch {
+        newsRepository.upsert(article)
+    }
+
+    fun getSavedNews() = newsRepository.getSavedNews()
 
 }
