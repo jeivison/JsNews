@@ -2,7 +2,7 @@ package com.example.jsnews.repository
 
 import com.example.jsnews.db.ArticleDatabase
 import com.example.jsnews.service.RetrofitInstance
-import com.example.jsnews.ui.main.fragment.Article
+import com.example.jsnews.model.Article
 
 class NewsRepository(
     val db: ArticleDatabase
@@ -18,6 +18,6 @@ class NewsRepository(
 
     fun getSavedNews() = db.getArticleDao().getAllarticles()
 
-    suspend fun deleteArticle(article: Article) = db.getArticleDao().deleteArticle(article)
+    suspend fun deleteArticle(article: Article) = db.getArticleDao().updset(article)
 
 }

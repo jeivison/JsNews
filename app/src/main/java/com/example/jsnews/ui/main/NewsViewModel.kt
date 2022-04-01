@@ -16,13 +16,15 @@ class NewsViewModel(
 
     val breakingNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     var breakingNewsPage = 1
+    var breakingNewsResponse: NewsResponse? = null
 
     val searchNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     var searchNewsPage = 1
+    var searchNewsResponse: NewsResponse? = null
 
 
     init {
-        getBreakingNews("pt")
+        getBreakingNews("br")
     }
 
     fun getBreakingNews(countryCode: String) = viewModelScope.launch {
@@ -57,11 +59,14 @@ class NewsViewModel(
         return Resource.Error(response.message())
     }
 
-
     fun saveArticle(article: Article) = viewModelScope.launch {
         newsRepository.upsert(article)
     }
 
     fun getSavedNews() = newsRepository.getSavedNews()
+
+    fun deleteArticle(article: Article) = viewModelScope.launch {
+        newsRepository.deleteArticle(article)
+    }
 
 }

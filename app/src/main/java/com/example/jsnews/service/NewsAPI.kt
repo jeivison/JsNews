@@ -18,6 +18,7 @@ interface NewsAPI {
         countryCode: String = "br",
         @Query("page")
         pagerNumber: Int = 1,
+        @Query("apiKey")
         apiKey: String = API_KEY
     ): Response<NewsResponse>
 
@@ -27,6 +28,7 @@ interface NewsAPI {
         countryCode: String = "br",
         @Query("page")
         pagerNumber: Int = 1,
+        @Query("apiKey")
         apiKey: String = API_KEY
     ): Response<NewsResponse>
 
