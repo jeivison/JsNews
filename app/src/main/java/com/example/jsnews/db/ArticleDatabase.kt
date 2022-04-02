@@ -19,23 +19,10 @@ abstract class ArticleDatabase : RoomDatabase(){
     abstract fun getArticleDao(): ArticleDao
 
     companion object{
-
-
         @Volatile
         private var instance: ArticleDatabase? = null
         private val LOCK = Any()
-        /*
-        fun createDatabase(context: Context): ArticleDatabase{
-            return INSTANCE ?: synchronized(this){
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    ArticleDatabase::class.java,
-                    "article_db.db"
-                ).build()
-                INSTANCE = instance
-                return instance
-            }
-        }*/
+
 
         operator fun invoke(context: Context) = instance ?: synchronized(LOCK){
             instance?: createDatabase(context).also{ instance = it }
