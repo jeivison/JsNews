@@ -12,7 +12,7 @@ interface NewsAPI {
     //https://newsapi.org/v2/top-headlines?country=us&apiKey=API_KEY
     //KEY: 883503dde64a44e7a9f83ff2b1b4959e
 
-    @GET("v2/top-headlines")
+    @GET("/v2/top-headlines")
     suspend fun getBreakingNews(
         @Query("country")
         countryCode: String = "br",
@@ -22,7 +22,7 @@ interface NewsAPI {
         apiKey: String = API_KEY
     ): Response<NewsResponse>
 
-    @GET("v2/everything")
+    @GET("/v2/everything")
     suspend fun searchForNews(
         @Query("q")
         countryCode: String = "br",
