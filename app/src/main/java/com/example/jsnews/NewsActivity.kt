@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import com.example.jsnews.databinding.ActivityNewsBinding
 import com.example.jsnews.db.ArticleDatabase
 import com.example.jsnews.repository.NewsRepository
 import com.example.jsnews.ui.main.NewsViewModel
@@ -14,10 +15,13 @@ import com.example.jsnews.ui.main.NewsViewModelProviderFactory
 class NewsActivity : AppCompatActivity() {
 
     lateinit var viewModel: NewsViewModel
+    private lateinit var binding: ActivityNewsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_news)
+        binding = ActivityNewsBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         val newsRepository = NewsRepository(ArticleDatabase(this))
         val viewModelProviderFactory = NewsViewModelProviderFactory(application, newsRepository)
