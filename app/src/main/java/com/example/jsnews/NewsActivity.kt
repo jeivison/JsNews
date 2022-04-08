@@ -3,12 +3,14 @@ package com.example.jsnews
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.example.jsnews.db.ArticleDatabase
 import com.example.jsnews.repository.NewsRepository
 import com.example.jsnews.ui.main.NewsViewModel
 import com.example.jsnews.ui.main.NewsViewModelProviderFactory
-
+import kotlinx.android.synthetic.main.activity_news.*
 
 
 class NewsActivity : AppCompatActivity() {
