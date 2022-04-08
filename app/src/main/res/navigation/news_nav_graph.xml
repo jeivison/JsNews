@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_breaknews" >
         <action
             android:id="@+id/action_breaknews_to_article"
-            app:destination="@id/article"
+            app:destination="@id/articleFragment"
             />
     </fragment>
     <fragment
@@ -22,7 +22,7 @@
         tools:layout="@layout/fragment_savednews" >
         <action
             android:id="@+id/action_savednews_to_article"
-            app:destination="@id/article" />
+            app:destination="@id/articleFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchnews"
@@ -30,15 +30,17 @@
         android:label="Searchnews" >
         <action
             android:id="@+id/action_searchnews_to_article"
-            app:destination="@id/article" />
+            app:destination="@id/articleFragment" />
     </fragment>
     <fragment
-        android:id="@+id/article"
+        android:id="@+id/articleFragment"
         android:name="com.example.jsnews.ui.main.fragment.Article"
-        android:label="fragment_article"
-        tools:layout="@layout/fragment_article" >
+        android:label="ArticleFragment"
+        tools:layout="@layout/fragment_article">
         <argument
             android:name="articleFragment"
-            app:argType="com.example.jsnews.model.Article" />
+            app:argType="com.example.jsnews.model.Article"
+            app:nullable="true"
+            android:defaultValue="@null"/>
     </fragment>
 </navigation>

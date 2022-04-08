@@ -2,7 +2,6 @@ package com.example.jsnews.ui.main.fragment
 
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.AbsListView
