@@ -13,7 +13,8 @@ import kotlinx.android.synthetic.main.item_article_preview.view.*
 
 class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>(){
 
-   // private var _binding : NewsAdapter? = null
+    private var _binding : NewsAdapter? = null
+    private val binding get() = _binding!!
 
 
     inner class ArticleViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)

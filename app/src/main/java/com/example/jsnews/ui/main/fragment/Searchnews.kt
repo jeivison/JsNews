@@ -1,8 +1,9 @@
 package com.example.jsnews.ui.main.fragment
 
 import android.os.Bundle
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
@@ -11,16 +12,13 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.jsnews.NewsActivity
 import com.example.jsnews.R
 import com.example.jsnews.adapters.NewsAdapter
+import com.example.jsnews.databinding.FragmentSearchnewsBinding
 import com.example.jsnews.service.Constants
 import com.example.jsnews.service.Constants.Companion.SEARCH_NEWS_TIME_DELAY
 import com.example.jsnews.ui.main.NewsViewModel
 import com.example.jsnews.ui.main.Resource
-import kotlinx.android.synthetic.main.fragment_breaknews.*
-import kotlinx.android.synthetic.main.fragment_searchnews.*
-import kotlinx.android.synthetic.main.fragment_searchnews.paginationProgressBar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -29,17 +27,25 @@ import kotlinx.coroutines.launch
 
 class Searchnews : Fragment(R.layout.fragment_searchnews) {
 
+    private var _binding: FragmentSearchnewsBinding? = null
+    private val binding get() = _binding!!
+
     lateinit var viewModel: NewsViewModel
     lateinit var newsAdapter: NewsAdapter
+
     val TAG = "SearchNewsFragment"
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel = (activity as NewsActivity).viewModel
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentSearchnewsBinding.inflate(inflater, container, false)
+
         setupRecyclerView()
 
-        newsAdapter.setOnItemClickListener{
+        newsAdapter.setOnItemClickListener {
             val bundle = Bundle().apply {
                 putSerializable("article", it)
             }
@@ -51,12 +57,12 @@ class Searchnews : Fragment(R.layout.fragment_searchnews) {
 
 
         var job: Job? = null
-        etSearch.addTextChangedListener { editable ->
+        binding.etSearch.addTextChangedListener { editable ->
             job?.cancel()
             job = MainScope().launch {
                 delay(SEARCH_NEWS_TIME_DELAY)
                 editable?.let {
-                    if (editable.toString().isNotEmpty()){
+                    if (editable.toString().isNotEmpty()) {
                         viewModel.searchNews(editable.toString())
                     }
                 }
@@ -65,22 +71,23 @@ class Searchnews : Fragment(R.layout.fragment_searchnews) {
 
 
         viewModel.searchNews.observe(viewLifecycleOwner, Observer { response ->
-            when(response){
+            when (response) {
                 is Resource.Seuccess -> {
                     hideProgressBar()
                     response.data?.let { newsResponse ->
                         newsAdapter.differ.submitList(newsResponse.articles.toList())
-                        val totalPages= newsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 2
+                        val totalPages = newsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 2
                         isLastPage = viewModel.searchNewsPage == totalPages
-                        if (isLastPage){
-                            rvBreakingNews.setPadding(0,0,0,0)
+                        if (isLastPage) {
+                            binding.rvSearchNews.setPadding(0, 0, 0, 0)
                         }
                     }
                 }
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occured: $message", Toast.LENGTH_LONG).show()
+                        Toast.makeText(activity, "An error occured: $message", Toast.LENGTH_LONG)
+                            .show()
                     }
                 }
                 is Resource.Loading -> {
@@ -89,16 +96,16 @@ class Searchnews : Fragment(R.layout.fragment_searchnews) {
 
             }
         })
-
+        return binding.root
     }
 
     private fun hideProgressBar() {
-        paginationProgressBar.visibility = View.INVISIBLE
+        binding.paginationProgressBar.visibility = View.INVISIBLE
         isLoading = false
     }
 
     private fun showProgressBar() {
-        paginationProgressBar.visibility = View.VISIBLE
+        binding.paginationProgressBar.visibility = View.VISIBLE
         isLoading = true
     }
 
@@ -122,7 +129,7 @@ class Searchnews : Fragment(R.layout.fragment_searchnews) {
             val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning &&
                     isTotalMoreThanVisible && isScrolling
             if (shouldPaginate){
-                viewModel.searchNews(etSearch.text.toString())
+                viewModel.searchNews(binding.etSearch.text.toString())
                 isScrolling = false
             }
         }
@@ -138,11 +145,16 @@ class Searchnews : Fragment(R.layout.fragment_searchnews) {
 
     private fun setupRecyclerView(){
         newsAdapter = NewsAdapter()
-        rvSearchNews.apply {
+        binding.rvSearchNews.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
             addOnScrollListener(this@Searchnews.scrollListener)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }

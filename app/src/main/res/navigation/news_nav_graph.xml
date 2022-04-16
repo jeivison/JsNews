@@ -13,6 +13,10 @@
         <action
             android:id="@+id/action_breaknews_to_article"
             app:destination="@id/articleFragment"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right"
             />
     </fragment>
     <fragment
@@ -22,7 +26,12 @@
         tools:layout="@layout/fragment_savednews" >
         <action
             android:id="@+id/action_savednews_to_article"
-            app:destination="@id/articleFragment" />
+            app:destination="@id/articleFragment"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right"
+            />
     </fragment>
     <fragment
         android:id="@+id/searchnews"
@@ -30,11 +39,16 @@
         android:label="Searchnews" >
         <action
             android:id="@+id/action_searchnews_to_article"
-            app:destination="@id/articleFragment" />
+            app:destination="@id/articleFragment"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right"
+            />
     </fragment>
     <fragment
         android:id="@+id/articleFragment"
-        android:name="com.example.jsnews.ui.main.fragment.Article"
+        android:name="com.example.jsnews.ui.main.fragment.ArticleFragment"
         android:label="ArticleFragment"
         tools:layout="@layout/fragment_article">
         <argument

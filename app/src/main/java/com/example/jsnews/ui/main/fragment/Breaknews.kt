@@ -2,36 +2,43 @@ package com.example.jsnews.ui.main.fragment
 
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.jsnews.NewsActivity
 import com.example.jsnews.R
 import com.example.jsnews.adapters.NewsAdapter
+import com.example.jsnews.databinding.FragmentBreaknewsBinding
 import com.example.jsnews.service.Constants.Companion.QUERY_PAGE_SIZE
 import com.example.jsnews.ui.main.NewsViewModel
 import com.example.jsnews.ui.main.Resource
-import kotlinx.android.synthetic.main.fragment_breaknews.*
 
 
 class Breaknews : Fragment(R.layout.fragment_breaknews) {
 
     lateinit var viewModel: NewsViewModel
     lateinit var newsAdapter: NewsAdapter
+    //Binding
+    private var _binding: FragmentBreaknewsBinding? = null
+    private val binding get() = _binding!!
 
     val TAG = "BreakingNews"
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel = (activity as NewsActivity).viewModel
-        setupRecyclerView()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentBreaknewsBinding.inflate(inflater, container, false)
 
-        newsAdapter.setOnItemClickListener{
+        setupRecyclerView()
+        newsAdapter.setOnItemClickListener {
             val bundle = Bundle().apply {
                 putSerializable("article", it)
             }
@@ -42,24 +49,24 @@ class Breaknews : Fragment(R.layout.fragment_breaknews) {
         }
 
 
-
         viewModel.breakingNews.observe(viewLifecycleOwner, Observer { response ->
-            when(response){
+            when (response) {
                 is Resource.Seuccess -> {
                     hideProgressBar()
                     response.data?.let { newsResponse ->
                         newsAdapter.differ.submitList(newsResponse.articles.toList())
-                        val totalPages= newsResponse.totalResults / QUERY_PAGE_SIZE + 2
+                        val totalPages = newsResponse.totalResults / QUERY_PAGE_SIZE + 2
                         isLastPage = viewModel.breakingNewsPage == totalPages
-                        if (isLastPage){
-                            rvBreakingNews.setPadding(0,0,0,0)
+                        if (isLastPage) {
+                            binding.rvBreakingNews.setPadding(0, 0, 0, 0)
                         }
                     }
                 }
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occured: $message", Toast.LENGTH_LONG).show()
+                        Toast.makeText(activity, "An error occured: $message", Toast.LENGTH_LONG)
+                            .show()
                     }
                 }
                 is Resource.Loading -> {
@@ -69,15 +76,16 @@ class Breaknews : Fragment(R.layout.fragment_breaknews) {
             }
         })
 
+        return binding.root
     }
 
     private fun hideProgressBar() {
-        paginationProgressBar.visibility = View.INVISIBLE
+        binding.paginationProgressBar.visibility = View.INVISIBLE
         isLoading = false
     }
 
     private fun showProgressBar() {
-        paginationProgressBar.visibility = View.VISIBLE
+        binding.paginationProgressBar.visibility = View.VISIBLE
         isLoading = true
     }
 
@@ -115,13 +123,16 @@ class Breaknews : Fragment(R.layout.fragment_breaknews) {
 
     private fun setupRecyclerView(){
         newsAdapter = NewsAdapter()
-        rvBreakingNews.apply {
+        binding.rvBreakingNews.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
             addOnScrollListener(this@Breaknews.scrollListener)
         }
     }
 
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
 

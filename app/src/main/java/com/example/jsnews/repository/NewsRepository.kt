@@ -5,7 +5,7 @@ import com.example.jsnews.service.RetrofitInstance
 import com.example.jsnews.model.Article
 
 class NewsRepository(
-    val db: ArticleDatabase
+    private val db: ArticleDatabase
 ) {
 
     suspend fun getBreakingNews(countryCode: String, pageNumber: Int) =
